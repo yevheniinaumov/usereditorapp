@@ -9,10 +9,19 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Button from '@mui/material/Button';
-import Link from 'next/link'
+import {useAppDispatch} from "../app/hooks";
+import {useRouter} from "next/router";
+import LoadingStatus from "./LoadingStatus";
+import {setUser} from "../features/users/userSlice";
 
 export default function UsersList() {
     const users = UpdateData();
+    const dispatch = useAppDispatch();
+    const router = useRouter()
+
+    if (!users) {
+        return <LoadingStatus text='Loading...'/>
+    }
 
     function createData(
         id: string,
@@ -25,6 +34,11 @@ export default function UsersList() {
     const rows = Object.values(users).map((user: { id: string; name: string; username: string; }) => {
         return createData(user.id, user.name, user.username)
     })
+
+    const select = (id: string) => {
+        dispatch(setUser(id))
+        router.push('/user')
+    }
 
     return <>
         <TableContainer component={Paper}>
@@ -49,11 +63,11 @@ export default function UsersList() {
                             <TableCell align="right">{row.name}</TableCell>
                             <TableCell align="right">{row.username}</TableCell>
                             <TableCell align="right">
-                                <Link href="/user">
-                                    <Button variant="contained" endIcon={<NavigateNextIcon/>}>
-                                        Select
-                                    </Button>
-                                </Link>
+                                <Button onClick={() => {
+                                    select(row.id)
+                                }} variant="contained" endIcon={<NavigateNextIcon/>}>
+                                    Select
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))}
