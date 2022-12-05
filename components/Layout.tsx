@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import PeopleIcon from '@mui/icons-material/People';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Footer from "./Footer";
 import Menu from "./Menu";
 import {globals} from "../globals";
@@ -116,7 +116,7 @@ export default function Layout({children}: { children: any }) {
                         >
                             <MenuIcon/>
                         </IconButton>
-                        <PeopleIcon/>
+                        <ManageAccountsIcon/>
                         <Typography sx={{
                             flex: '1 0 auto',
                             marginLeft: 1
