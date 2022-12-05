@@ -1,5 +1,7 @@
 import Head from "next/head";
 import {Typography} from "@mui/material";
+import * as React from "react";
+import UserCard from "../components/UserCard";
 
 export default function User() {
     return <>
@@ -11,5 +13,6 @@ export default function User() {
         <Typography variant="h1" component="h1">
             User Page
         </Typography>
+        <UserCard/>
     </>
 }
