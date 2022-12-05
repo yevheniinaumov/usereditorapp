@@ -1,5 +1,6 @@
 import Head from "next/head";
 import {Typography} from "@mui/material";
+import UsersList from "../components/UsersList";
 
 export default function Users() {
     return <>
@@ -11,5 +12,6 @@ export default function Users() {
         <Typography variant="h1" component="h1">
             Users Page
         </Typography>
+        <UsersList/>
     </>
 }
