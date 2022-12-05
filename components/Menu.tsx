@@ -9,7 +9,7 @@ import List from "@mui/material/List";
 import * as React from "react";
 import Link from 'next/link'
 
-export default function Menu(props: { open: any; }) {
+export default function Menu(props: { open: boolean; }) {
     const open = props.open
     return <>
         <List>
