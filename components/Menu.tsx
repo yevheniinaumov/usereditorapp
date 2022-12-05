@@ -17,7 +17,7 @@ export default function Menu(props: { open: boolean; }) {
                 const href = index > 0 ? '/' + title : '/';
                 const icon = index === 0 ? <HomeIcon/> : index % 2 === 0 ? <PersonIcon/> : <GroupIcon/>
                 return (
-                    <Link key={index} href={'/' + href}>
+                    <Link key={index} href={href}>
                         <ListItem disablePadding sx={{display: 'block'}}>
                             <ListItemButton
                                 sx={{
