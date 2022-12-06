@@ -16,6 +16,6 @@ export default function UpdateData () {
     if (!isEmpty(apiData)) {
         return apiData
     } else {
-        return false
+        return {}
     }
 }
