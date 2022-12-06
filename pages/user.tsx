@@ -1,6 +1,7 @@
 import Head from "next/head";
 import {Typography} from "@mui/material";
 import * as React from "react";
+import Box from '@mui/material/Box';
 import UserCard from "../components/UserCard";
 
 export default function User() {
@@ -13,6 +14,11 @@ export default function User() {
         <Typography variant="h1" component="h1">
             User Page
         </Typography>
-        <UserCard/>
+        <Box component="div" sx={{
+            display: 'flex',
+            justifyContent: 'center'
+        }}>
+            <UserCard/>
+        </Box>
     </>
 }

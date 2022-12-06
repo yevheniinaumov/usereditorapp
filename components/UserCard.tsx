@@ -15,10 +15,10 @@ export default function UserCard() {
     const dispatch = useAppDispatch();
     const users = UpdateData();
     const userIndex = useAppSelector(getUserIndex) ?? 0;
-    const userDataObj = Object.values(users)[userIndex];
+    const userDataObj = selectUser(userIndex);
     const userData = userDataObj ? Object.entries(userDataObj) : [];
 
-    if (!userIndex) {
+    if (userIndex === null || userIndex === undefined) {
         return <LoadingStatus text='The user has not selected.'/>
     }
 
@@ -26,20 +26,24 @@ export default function UserCard() {
         return <LoadingStatus text='No user information found.'/>
     }
 
-    const selectUser = (index: number) => {
-        dispatch(setUserIndex(index))
+    function selectUser(index: number) {
+        return Object.values(users)[index]
+    }
+
+    const changeUserIndex = (index: number) => {
+        if (selectUser(index)) dispatch(setUserIndex(index))
     }
 
     return <>
-        <Card sx={{maxWidth: 345}}>
+        <Card sx={{
+            width: '50%',
+            maxWidth: 600
+        }}>
             <CardActionArea>
-                <CardMedia
-                    component="img"
-                    height="140"
-                    image="user.png"
-                    alt="green iguana"
-                />
                 <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                        User Card
+                    </Typography>
                     {userData.length ?
                         <List>
                             {userData.map((el, index) => {
@@ -60,14 +64,17 @@ export default function UserCard() {
                     }
                 </CardContent>
             </CardActionArea>
-            <CardActions>
+            <CardActions sx={{
+                display: 'flex',
+                justifyContent: 'space-between'
+            }}>
                 <Button onClick={() => {
-                    selectUser(userIndex - 1)
+                    changeUserIndex(userIndex - 1)
                 }} size="small" color="primary">
                     Prev User
                 </Button>
                 <Button onClick={() => {
-                    selectUser(userIndex + 1)
+                    changeUserIndex(userIndex + 1)
                 }} size="small" color="primary">
                     Next User
                 </Button>
