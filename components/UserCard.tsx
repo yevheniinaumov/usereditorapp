@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../app/hooks";
-import {getUserIndex, setUserIndex} from "../features/users/userIndexSlice";
+import {getUser, setUser} from "../features/users/userSlice";
 import LoadingStatus from "./LoadingStatus";
 import * as React from "react";
 import UpdateData from "./updateData";
@@ -9,15 +9,20 @@ import {Button, CardActionArea, CardActions, Typography} from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import {useState} from "react";
 
 export default function UserCard() {
     const dispatch = useAppDispatch();
     const users = UpdateData();
-    const userIndex = useAppSelector(getUserIndex) ?? 0;
-    const userDataObj = selectUser(userIndex);
-    const userData = userDataObj ? Object.entries(userDataObj) : [];
+    const usersData = Object.values(users)
+    const userID = useAppSelector(getUser);
+    const user = usersData.filter((item) => {
+        return item.id === userID
+    }).at(-1);
+    const [userIndex, setUserIndex] = useState(usersData.indexOf(user))
+    const userData = user ? Object.entries(user) : []
 
-    if (userIndex === null || userIndex === undefined) {
+    if (!userID) {
         return <LoadingStatus text='The user has not selected.'/>
     }
 
@@ -25,12 +30,14 @@ export default function UserCard() {
         return <LoadingStatus text='No user information found.'/>
     }
 
-    function selectUser(index: number) {
-        return Object.values(users)[index]
-    }
-
-    const changeUserIndex = (index: number) => {
-        if (selectUser(index)) dispatch(setUserIndex(index))
+    const changeUser = (index: number) => {
+        if (index < 0 || index >= usersData.length) {
+            setUserIndex(0)
+            dispatch(setUser(usersData[0].id ))
+        } else {
+            setUserIndex(index)
+            dispatch(setUser(usersData[index].id ))
+        }
     }
 
     return <>
@@ -68,12 +75,12 @@ export default function UserCard() {
                 justifyContent: 'space-between'
             }}>
                 <Button onClick={() => {
-                    changeUserIndex(userIndex - 1)
+                    changeUser(userIndex-1)
                 }} size="small" color="primary">
                     Prev User
                 </Button>
                 <Button onClick={() => {
-                    changeUserIndex(userIndex + 1)
+                    changeUser(userIndex+1)
                 }} size="small" color="primary">
                     Next User
                 </Button>

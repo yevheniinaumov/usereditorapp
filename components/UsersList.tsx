@@ -15,7 +15,7 @@ import Button from '@mui/material/Button';
 import {useAppDispatch} from "../app/hooks";
 import {useRouter} from "next/router";
 import LoadingStatus from "./LoadingStatus";
-import {setUserIndex} from "../features/users/userIndexSlice";
+import {setUser} from "../features/users/userSlice";
 
 export default function UsersList() {
     const users = UpdateData();
@@ -49,8 +49,8 @@ export default function UsersList() {
         setPage(0);
     };
 
-    const selectUser = (index: number) => {
-        dispatch(setUserIndex(index))
+    const selectUser = (id: string) => {
+        dispatch(setUser(id))
         router.push('/user')
     }
 
@@ -79,7 +79,7 @@ export default function UsersList() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                             <TableRow
                                 key={row.name}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -91,7 +91,7 @@ export default function UsersList() {
                                 <TableCell align="right">{row.username}</TableCell>
                                 <TableCell align="right">
                                     <Button onClick={() => {
-                                        selectUser(index)
+                                        selectUser(row.id)
                                     }} variant="contained" endIcon={<NavigateNextIcon/>}>
                                         Select
                                     </Button>
