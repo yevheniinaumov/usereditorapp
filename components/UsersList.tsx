@@ -124,7 +124,7 @@ export default function UsersList() {
                                             <Button>Edit</Button>
                                             <Button onClick={() => {
                                                 selectUser(row.id)
-                                            }}>Select</Button>
+                                            }}>View</Button>
                                         </ButtonGroup>
                                     </Box>
                                 </TableCell>

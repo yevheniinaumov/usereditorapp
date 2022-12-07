@@ -53,7 +53,8 @@ export default function UserCard() {
                     {userData.length ?
                         <List>
                             {userData.map((el, index) => {
-                                const fieldName = el[0]
+                                const firstValue = el[0]
+                                const fieldName = firstValue.charAt(0).toUpperCase() + firstValue.slice(1)
                                 const fieldValue = el.at(-1)
                                 const text = fieldName + ': ' + fieldValue
                                 return (
