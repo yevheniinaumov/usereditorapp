@@ -5,6 +5,11 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import UpdateData from './updateData';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {getUser} from '../features/users/userSlice';
+import DeleteIcon from '@mui/icons-material/Delete';
+import UserForm from './UserForm';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -21,14 +26,27 @@ const style = {
 export default function EditModal(props: {
     handle: any; status: boolean; type: string;
 }) {
+    const dispatch = useAppDispatch();
+    const users = UpdateData();
+    const userID = useAppSelector(getUser);
     let title = ''
     const open = props.status
     const handleClose = props.handle
     const type = props.type
     const editStatus = type && type === 'edit' ? true : false
     const addingStatus = type && type === 'new' ? true : false
-    if (addingStatus) title = 'Add new user'
-    if (editStatus) title = 'Edit or delete User'
+
+    if (editStatus) {
+        title = 'Edit or delete User'
+    }
+
+    if (addingStatus) {
+        title = 'Add new user'
+    }
+
+    function deleteUser() {
+        console.log('delete')
+    }
 
     return (
         <Modal
@@ -47,6 +65,12 @@ export default function EditModal(props: {
                     <Typography variant="h6" component="h2">
                         {title}
                     </Typography>
+                    <UserForm type={type}/>
+                    {editStatus &&
+                      <Button onClick={deleteUser} variant="contained" endIcon={<DeleteIcon/>}>
+                        Delete User
+                      </Button>
+                    }
                 </Box>
             </Fade>
         </Modal>
