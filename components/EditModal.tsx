@@ -10,6 +10,7 @@ import {useAppDispatch, useAppSelector} from '../app/hooks';
 import {getUser} from '../features/users/userSlice';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserForm from './UserForm';
+import { getUsers, setUsers } from '../features/users/usersSlice';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -27,7 +28,7 @@ export default function EditModal(props: {
     handle: any; status: boolean; type: string;
 }) {
     const dispatch = useAppDispatch();
-    const users = UpdateData();
+    const users = Object.values(useAppSelector(getUsers));
     const userID = useAppSelector(getUser);
     let title = ''
     const open = props.status
@@ -35,6 +36,9 @@ export default function EditModal(props: {
     const type = props.type
     const editStatus = type && type === 'edit' ? true : false
     const addingStatus = type && type === 'new' ? true : false
+    const userData = users.filter((user) => {
+        return user.id !== userID;
+    })
 
     if (editStatus) {
         title = 'Edit or delete User'
@@ -45,7 +49,11 @@ export default function EditModal(props: {
     }
 
     function deleteUser() {
-        console.log('delete')
+        const filteredUsers = users.filter((user) => {
+            return user.id !== userID;
+        })
+        dispatch(setUsers(filteredUsers))
+        handleClose()
     }
 
     return (

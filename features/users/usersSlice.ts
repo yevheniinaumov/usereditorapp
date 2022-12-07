@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
 import axios from 'axios'
 
@@ -23,7 +23,11 @@ export const dataAsync = createAsyncThunk(
 export const usersSlice = createSlice({
     name: 'users',
     initialState,
-    reducers: {},
+    reducers: {
+        setUsers: (state, action: PayloadAction<object>) => {
+            state.value = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(dataAsync.pending, (state) => {
@@ -38,6 +42,8 @@ export const usersSlice = createSlice({
             });
     },
 })
+
+export const {setUsers} = usersSlice.actions;
 
 export const getUsers = (state: RootState) => state.users.value;
 
