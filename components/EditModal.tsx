@@ -7,17 +7,18 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import UpdateData from './updateData';
 import {useAppDispatch, useAppSelector} from '../app/hooks';
-import {getUser} from '../features/users/userSlice';
+import {getUser, setUser} from '../features/users/userSlice';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserForm from './UserForm';
-import { getUsers, setUsers } from '../features/users/usersSlice';
+import {getUsers, setUsers} from '../features/users/usersSlice';
 
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: '100%',
+    maxWidth: '75%',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -37,7 +38,7 @@ export default function EditModal(props: {
     const editStatus = type && type === 'edit' ? true : false
     const addingStatus = type && type === 'new' ? true : false
     const userData = users.filter((user) => {
-        return user.id !== userID;
+        return user.id === userID;
     })
 
     if (editStatus) {
@@ -45,6 +46,7 @@ export default function EditModal(props: {
     }
 
     if (addingStatus) {
+        dispatch(setUser(''))
         title = 'Add new user'
     }
 
@@ -75,9 +77,15 @@ export default function EditModal(props: {
                     </Typography>
                     <UserForm type={type}/>
                     {editStatus &&
-                      <Button onClick={deleteUser} variant="contained" endIcon={<DeleteIcon/>}>
-                        Delete User
-                      </Button>
+                      <Box sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          mt: 5
+                      }}>
+                        <Button onClick={deleteUser} variant="contained" endIcon={<DeleteIcon/>}>
+                          Delete User
+                        </Button>
+                      </Box>
                     }
                 </Box>
             </Fade>
