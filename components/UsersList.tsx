@@ -18,7 +18,8 @@ import LoadingStatus from "./LoadingStatus";
 import {setUser} from "../features/users/userSlice";
 import { isEmpty } from "./helpers";
 import AddIcon from '@mui/icons-material/Add';
-import TextField from '@mui/material/TextField';
+import SearchBar from "material-ui-search-bar";
+import { TextField } from "@mui/material";
 
 export default function UsersList() {
     const users = UpdateData();
@@ -26,6 +27,7 @@ export default function UsersList() {
     const router = useRouter()
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [searched, setSearched] = React.useState('');
 
     if (!users || isEmpty(users)) {
         return <LoadingStatus text='Loading...'/>
@@ -73,7 +75,11 @@ export default function UsersList() {
                 >
                     List of users
                 </Typography>
-                <TextField sx={{ mr: 1 }} label="User search"/>
+                <TextField
+                    value={searched}
+                    onChange={(e) => setSearched(e.target.value)}
+                    sx={{ mr: 1 }}
+                    label="User search"/>
                 <Button variant="contained" endIcon={<AddIcon/>}>
                     Add User
                 </Button>
@@ -89,7 +95,9 @@ export default function UsersList() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                        {rows.filter((row) => { return row.name.toLowerCase().includes(searched.toLowerCase()); })
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row) => (
                             <TableRow
                                 key={row.name}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
