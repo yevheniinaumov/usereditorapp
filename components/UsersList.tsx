@@ -20,6 +20,8 @@ import { isEmpty } from "./helpers";
 import AddIcon from '@mui/icons-material/Add';
 import SearchBar from "material-ui-search-bar";
 import { TextField } from "@mui/material";
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Box from '@mui/material/Box';
 
 export default function UsersList() {
     const users = UpdateData();
@@ -108,11 +110,23 @@ export default function UsersList() {
                                 <TableCell align="right">{row.name}</TableCell>
                                 <TableCell align="right">{row.username}</TableCell>
                                 <TableCell align="right">
-                                    <Button onClick={() => {
-                                        selectUser(row.id)
-                                    }} variant="contained" endIcon={<NavigateNextIcon/>}>
-                                        Select
-                                    </Button>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'flex-end',
+                                            '& > *': {
+                                                m: 1,
+                                            },
+                                        }}
+                                    >
+                                        <ButtonGroup variant="text" aria-label="text button group">
+                                            <Button>Edit</Button>
+                                            <Button onClick={() => {
+                                                selectUser(row.id)
+                                            }}>Select</Button>
+                                        </ButtonGroup>
+                                    </Box>
                                 </TableCell>
                             </TableRow>
                         ))}
