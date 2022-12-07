@@ -16,6 +16,9 @@ import {useAppDispatch} from "../app/hooks";
 import {useRouter} from "next/router";
 import LoadingStatus from "./LoadingStatus";
 import {setUser} from "../features/users/userSlice";
+import { isEmpty } from "./helpers";
+import AddIcon from '@mui/icons-material/Add';
+import TextField from '@mui/material/TextField';
 
 export default function UsersList() {
     const users = UpdateData();
@@ -24,7 +27,7 @@ export default function UsersList() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    if (!users) {
+    if (!users || isEmpty(users)) {
         return <LoadingStatus text='Loading...'/>
     }
 
@@ -58,15 +61,22 @@ export default function UsersList() {
         <Paper sx={{width: '100%', overflow: 'hidden'}}>
             <Toolbar sx={{
                 pl: {sm: 2},
-                pr: {xs: 1, sm: 1}
+                pr: {xs: 1, sm: 1},
+                display: 'flex',
+                justifyContent: 'space-between'
             }}>
                 <Typography
                     variant="h6"
                     noWrap
                     component="div"
+                    sx={{ flex: 1 }}
                 >
                     List of users
                 </Typography>
+                <TextField sx={{ mr: 1 }} label="User search"/>
+                <Button variant="contained" endIcon={<AddIcon/>}>
+                    Add User
+                </Button>
             </Toolbar>
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: 650}} size="small" aria-label="a dense table">
