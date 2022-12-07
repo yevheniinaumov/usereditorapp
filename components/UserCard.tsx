@@ -11,10 +11,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import {useState} from "react";
 import ListUserData from "./ListUserData";
+import { getUsers } from "../features/users/usersSlice";
 
 export default function UserCard() {
     const dispatch = useAppDispatch();
-    const users = UpdateData();
+    const users = useAppSelector(getUsers);
     const usersData = Object.values(users)
     const userID = useAppSelector(getUser);
     const user = usersData.filter((item) => {
