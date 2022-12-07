@@ -10,6 +10,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import {useState} from "react";
+import ListUserData from "./ListUserData";
 
 export default function UserCard() {
     const dispatch = useAppDispatch();
@@ -33,10 +34,10 @@ export default function UserCard() {
     const changeUser = (index: number) => {
         if (index < 0 || index >= usersData.length) {
             setUserIndex(0)
-            dispatch(setUser(usersData[0].id ))
+            dispatch(setUser(usersData[0].id))
         } else {
             setUserIndex(index)
-            dispatch(setUser(usersData[index].id ))
+            dispatch(setUser(usersData[index].id))
         }
     }
 
@@ -50,25 +51,7 @@ export default function UserCard() {
                     <Typography gutterBottom variant="h5" component="div">
                         User Card
                     </Typography>
-                    {userData.length ?
-                        <List>
-                            {userData.map((el, index) => {
-                                const firstValue = el[0]
-                                const fieldName = firstValue.charAt(0).toUpperCase() + firstValue.slice(1)
-                                const fieldValue = el.at(-1)
-                                const text = fieldName + ': ' + fieldValue
-                                return (
-                                    <ListItem key={index} disablePadding>
-                                        <ListItemText primary={text}/>
-                                    </ListItem>
-                                )
-                            })}
-                        </List>
-                        :
-                        <Typography variant="h5" component="span">
-                            User is not found. Try to go back.
-                        </Typography>
-                    }
+                    {userData.length && <ListUserData list={userData}/>}
                 </CardContent>
             </CardActionArea>
             <CardActions sx={{
@@ -76,12 +59,12 @@ export default function UserCard() {
                 justifyContent: 'space-between'
             }}>
                 <Button onClick={() => {
-                    changeUser(userIndex-1)
+                    changeUser(userIndex - 1)
                 }} size="small" color="primary">
                     Prev User
                 </Button>
                 <Button onClick={() => {
-                    changeUser(userIndex+1)
+                    changeUser(userIndex + 1)
                 }} size="small" color="primary">
                     Next User
                 </Button>
