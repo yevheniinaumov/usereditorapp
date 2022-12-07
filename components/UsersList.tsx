@@ -16,12 +16,13 @@ import {useAppDispatch} from "../app/hooks";
 import {useRouter} from "next/router";
 import LoadingStatus from "./LoadingStatus";
 import {setUser} from "../features/users/userSlice";
-import { isEmpty } from "./helpers";
+import {isEmpty} from "./helpers";
 import AddIcon from '@mui/icons-material/Add';
 import SearchBar from "material-ui-search-bar";
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
+import EditModal from "./EditModal";
 
 export default function UsersList() {
     const users = UpdateData();
@@ -30,6 +31,8 @@ export default function UsersList() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searched, setSearched] = React.useState('');
+    const [modalStatus, setModalStatus] = React.useState(false);
+    const [modalType, setModalType] = React.useState('');
 
     if (!users || isEmpty(users)) {
         return <LoadingStatus text='Loading...'/>
@@ -61,6 +64,14 @@ export default function UsersList() {
         router.push('/user')
     }
 
+    const handleOpenModal = (type: string, id: string) => {
+        if (id) dispatch(setUser(id))
+        setModalType(type)
+        setModalStatus(true)
+    }
+
+    const handleCloseModal = () => setModalStatus(false);
+
     return <>
         <Paper sx={{width: '100%', overflow: 'hidden'}}>
             <Toolbar sx={{
@@ -73,16 +84,18 @@ export default function UsersList() {
                     variant="h6"
                     noWrap
                     component="div"
-                    sx={{ flex: 1 }}
+                    sx={{flex: 1}}
                 >
                     List of users
                 </Typography>
                 <TextField
                     value={searched}
                     onChange={(e) => setSearched(e.target.value)}
-                    sx={{ mr: 1 }}
+                    sx={{mr: 1}}
                     label="User search"/>
-                <Button variant="contained" endIcon={<AddIcon/>}>
+                <Button onClick={() => {
+                    handleOpenModal('new', '')
+                }} variant="contained" endIcon={<AddIcon/>}>
                     Add User
                 </Button>
             </Toolbar>
@@ -97,39 +110,43 @@ export default function UsersList() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.filter((row) => { return row.name.toLowerCase().includes(searched.toLowerCase()); })
+                        {rows.filter((row) => {
+                            return row.name.toLowerCase().includes(searched.toLowerCase());
+                        })
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => (
-                            <TableRow
-                                key={row.name}
-                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row.id}
-                                </TableCell>
-                                <TableCell align="right">{row.name}</TableCell>
-                                <TableCell align="right">{row.username}</TableCell>
-                                <TableCell align="right">
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            alignItems: 'flex-end',
-                                            '& > *': {
-                                                m: 1,
-                                            },
-                                        }}
-                                    >
-                                        <ButtonGroup variant="text" aria-label="text button group">
-                                            <Button>Edit</Button>
-                                            <Button onClick={() => {
-                                                selectUser(row.id)
-                                            }}>View</Button>
-                                        </ButtonGroup>
-                                    </Box>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                <TableRow
+                                    key={row.name}
+                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {row.id}
+                                    </TableCell>
+                                    <TableCell align="right">{row.name}</TableCell>
+                                    <TableCell align="right">{row.username}</TableCell>
+                                    <TableCell align="right">
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'flex-end',
+                                                '& > *': {
+                                                    m: 1,
+                                                },
+                                            }}
+                                        >
+                                            <ButtonGroup variant="text" aria-label="text button group">
+                                                <Button onClick={() => {
+                                                    handleOpenModal('edit', row.id)
+                                                }}>Edit</Button>
+                                                <Button onClick={() => {
+                                                    selectUser(row.id)
+                                                }}>View</Button>
+                                            </ButtonGroup>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -143,5 +160,6 @@ export default function UsersList() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </Paper>
+        <EditModal type={modalType} status={modalStatus} handle={handleCloseModal}/>
     </>
 }
