@@ -1,26 +1,35 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import {useAppSelector} from '../app/hooks';
-import {getUsers} from '../features/users/usersSlice';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {getUsers, setUsers} from '../features/users/usersSlice';
 import {getUser} from '../features/users/userSlice';
 import {Button} from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import {useState} from "react";
 
 export default function UserForm(props: { type: any }) {
+    const dispatch = useAppDispatch();
     const type = props.type
     const users = Object.values(useAppSelector(getUsers));
     const userID = useAppSelector(getUser);
-    const userData = users.filter((user) => {
-        return user.id === userID;
-    })
+    const userData = userID ? users.filter((user) => {
+        return user.id == userID;
+    }).at(-1) : []
     let listFields: any
     if (type === 'new') listFields = Object.keys(users[0])
-    if (type === 'edit') listFields = Object.entries(userData.at(-1))
+    if (type === 'edit') listFields = Object.entries(userData)
 
-    React.useEffect(() => {
-        console.log(listFields)
-    });
+
+    function onChangeField (name: string, value: any) {
+        if (type === 'edit') {
+            const changedUserData = users.map((user) => ({
+            ...user,
+            [name]: user.id === userID ? value : user[name]
+            }))
+            dispatch(setUsers(changedUserData))
+        }
+    }
 
     function applyUserData() {
         console.log('applyUserData')
@@ -48,6 +57,9 @@ export default function UserForm(props: { type: any }) {
                         id={name}
                         label={name}
                         defaultValue={value}
+                        onChange={(e) => {
+                            onChangeField(name, e.target.value);
+                        }}
                     />
                 )
             })
