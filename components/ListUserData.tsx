@@ -20,8 +20,8 @@ export default function ListUserData(props: { list: any; }) {
                 } else {
                     secondFieldValue = secondField
                 }
-                return <>
-                    <ListItem key={index} disablePadding>
+                return (
+                    <ListItem key={firstFieldValue + index} disablePadding>
                         <ListItemText secondary={
                             <React.Fragment>
                                 <Typography
@@ -54,8 +54,8 @@ export default function ListUserData(props: { list: any; }) {
                                             } else {
                                                 secondFieldValue = secondField
                                             }
-                                            return <>
-                                                <ListItem key={index} disablePadding>
+                                            return (
+                                                <ListItem key={firstFieldValue + index} disablePadding>
                                                     <ListItemText secondary={
                                                         <React.Fragment>
                                                             <Typography
@@ -81,8 +81,9 @@ export default function ListUserData(props: { list: any; }) {
                                                                         const firstFieldValue = el[0] + ': '
                                                                         const secondFieldValue: any = el.at(-1)
 
-                                                                        return <>
-                                                                            <ListItem key={index} disablePadding>
+                                                                        return (
+                                                                            <ListItem key={firstFieldValue + index}
+                                                                                      disablePadding>
                                                                                 <ListItemText secondary={
                                                                                     <React.Fragment>
                                                                                         <Typography
@@ -101,7 +102,7 @@ export default function ListUserData(props: { list: any; }) {
                                                                                 }
                                                                                 />
                                                                             </ListItem>
-                                                                        </>
+                                                                        )
                                                                     })}
                                                                 </List>
                                                               </Box>
@@ -110,7 +111,7 @@ export default function ListUserData(props: { list: any; }) {
                                                     }
                                                     />
                                                 </ListItem>
-                                            </>
+                                            )
                                         })}
                                     </List>
                                   </Box>
@@ -119,7 +120,7 @@ export default function ListUserData(props: { list: any; }) {
                         }
                         />
                     </ListItem>
-                </>
+                )
             })
             }
         </List>
