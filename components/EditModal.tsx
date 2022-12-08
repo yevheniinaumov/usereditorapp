@@ -57,6 +57,7 @@ export default function EditModal(props: {
         const emptyFields: object = listFields.reduce((a, v) => ({
             ...a, [v]: ''
         }), {})
+        // @ts-ignore
         emptyFields.id = newID
         dispatch(setUser(newID))
         dispatch(setUsers([...users, emptyFields]))
