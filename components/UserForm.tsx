@@ -9,10 +9,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import {useState} from "react";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import {Typography} from '@mui/material';
+import { getModalType } from '../features/modal/modalTypeSlice';
 
-export default function UserForm(props: { type: any }) {
+export default function UserForm() {
     const dispatch = useAppDispatch();
-    const type = props.type
+    const type = useAppSelector(getModalType)
     const users = Object.values(useAppSelector(getUsers));
     const userID = useAppSelector(getUser);
     const userData = userID ? users.filter((user) => {

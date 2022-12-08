@@ -12,7 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Button from '@mui/material/Button';
-import {useAppDispatch} from "../app/hooks";
+import {useAppDispatch, useAppSelector} from "../app/hooks";
 import {useRouter} from "next/router";
 import LoadingStatus from "./LoadingStatus";
 import {setUser} from "../features/users/userSlice";
@@ -23,16 +23,17 @@ import {TextField} from "@mui/material";
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import EditModal from "./EditModal";
+import { getModalType, setModalType } from "../features/modal/modalTypeSlice";
 
 export default function UsersList() {
     const users = UpdateData();
     const dispatch = useAppDispatch();
     const router = useRouter()
+    const type = useAppSelector(getModalType)
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searched, setSearched] = React.useState('');
     const [modalStatus, setModalStatus] = React.useState(false);
-    const [modalType, setModalType] = React.useState('');
 
     if (!users || isEmpty(users)) {
         return <LoadingStatus text='Loading...'/>
@@ -64,9 +65,9 @@ export default function UsersList() {
         router.push('/user')
     }
 
-    const handleOpenModal = (type: string, id: number | string) => {
+    const handleOpenModal = (newType: string, id: number | string) => {
         dispatch(setUser(id))
-        setModalType(type)
+        dispatch(setModalType(newType))
         setModalStatus(true)
     }
 
@@ -160,6 +161,6 @@ export default function UsersList() {
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </Paper>
-        <EditModal type={modalType} status={modalStatus} handle={handleCloseModal}/>
+        <EditModal status={modalStatus} handle={handleCloseModal}/>
     </>
 }

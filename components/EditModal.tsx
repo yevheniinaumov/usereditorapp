@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import UserForm from './UserForm';
 import {getUsers, setUsers} from '../features/users/usersSlice';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { getModalType, setModalType } from '../features/modal/modalTypeSlice';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -27,28 +28,24 @@ const style = {
 };
 
 export default function EditModal(props: {
-    handle: any; status: boolean; type: string;
+    handle: any; status: boolean;
 }) {
     const dispatch = useAppDispatch();
     const users = Object.values(useAppSelector(getUsers));
     const userID = useAppSelector(getUser);
     const open = props.status
     const handleClose = props.handle
-    const [type, setType] = React.useState('');
+    const type = useAppSelector(getModalType)
     const listFields = Object.keys(users[0])
-    const [creatingStatus, setCreatingStatus] = React.useState(true);
+    const [showCreateButton, setShowCreateButton] = React.useState(true);
     let title = ''
 
     if (type === 'new') title = 'Add new user'
 
     if (type === 'edit') title = 'Edit or delete User'
 
-    React.useEffect(() => {
-        setType(props.type)
-    }, [props.type]);
-
     function createUser() {
-        setCreatingStatus(false)
+        dispatch(setModalType('edit'))
         const allIds = users.map((user) => {
             return user.id
         })
@@ -61,7 +58,6 @@ export default function EditModal(props: {
         emptyFields.id = newID
         dispatch(setUser(newID))
         dispatch(setUsers([...users, emptyFields]))
-        setType('edit')
     }
 
     function deleteUser() {
@@ -87,25 +83,18 @@ export default function EditModal(props: {
                     <Typography variant="h6" component="h2">
                         {title}
                     </Typography>
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        m: 1
-                    }}>
-                        {type === 'new' && creatingStatus &&
-                          <Button onClick={createUser} variant="contained" endIcon={<AddCircleOutlineIcon/>}>
-                            Create User
-                          </Button>
-                        }
-                    </Box>
-                    <UserForm type={type}/>
-
+                    <UserForm/>
                     <Box sx={{
                         display: 'flex',
                         justifyContent: 'center',
                         mt: 3
                     }}>
-                        {(!creatingStatus || type === 'edit') &&
+                        {(type === 'new') &&
+                        <Button onClick={createUser} variant="contained" endIcon={<AddCircleOutlineIcon/>}>
+                            Create User
+                        </Button>
+                        }
+                        {(type === 'edit') &&
                           <Button onClick={deleteUser} variant="contained" endIcon={<DeleteIcon/>}>
                             Delete User
                           </Button>
