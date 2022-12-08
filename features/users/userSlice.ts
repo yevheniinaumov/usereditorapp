@@ -2,18 +2,18 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
 
 export interface UserState {
-    value: number
+    value: number | string
 }
 
 const initialState: UserState = {
-    value: 0,
+    value: '',
 };
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setUser: (state, action: PayloadAction<number>) => {
+        setUser: (state, action: PayloadAction<number|string>) => {
             state.value = action.payload;
         },
     },

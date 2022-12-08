@@ -64,8 +64,8 @@ export default function UsersList() {
         router.push('/user')
     }
 
-    const handleOpenModal = (type: string, id: number) => {
-        if (id) dispatch(setUser(id))
+    const handleOpenModal = (type: string, id: number | string) => {
+        dispatch(setUser(id))
         setModalType(type)
         setModalStatus(true)
     }
@@ -94,7 +94,7 @@ export default function UsersList() {
                     sx={{mr: 1}}
                     label="User search"/>
                 <Button onClick={() => {
-                    handleOpenModal('new', 0)
+                    handleOpenModal('new', '')
                 }} variant="contained" endIcon={<AddIcon/>}>
                     Add User
                 </Button>

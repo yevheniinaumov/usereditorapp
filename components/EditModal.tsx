@@ -32,7 +32,6 @@ export default function EditModal(props: {
     const dispatch = useAppDispatch();
     const users = Object.values(useAppSelector(getUsers));
     const userID = useAppSelector(getUser);
-    let title = ''
     const open = props.status
     const handleClose = props.handle
     const type = props.type
@@ -40,10 +39,7 @@ export default function EditModal(props: {
     const addingStatus = type && type === 'new' ? true : false
     const listFields = Object.keys(users[0])
     const [creatingStatus, setCreatingStatus] = React.useState(true);
-
-    React.useEffect(() => {
-        console.log(users)
-    });
+    let title = ''
 
     if (addingStatus) title = 'Add new user'
 
@@ -87,29 +83,30 @@ export default function EditModal(props: {
                     <Typography variant="h6" component="h2">
                         {title}
                     </Typography>
-                    {addingStatus && creatingStatus &&
-                      <Box sx={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          m: 1
-                      }}>
-                        <Button onClick={createUser} variant="contained" endIcon={<AddCircleOutlineIcon/>}>
-                          Create User
-                        </Button>
-                      </Box>
-                    }
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        m: 1
+                    }}>
+                        {addingStatus && creatingStatus &&
+                          <Button onClick={createUser} variant="contained" endIcon={<AddCircleOutlineIcon/>}>
+                            Create User
+                          </Button>
+                        }
+                    </Box>
                     <UserForm type={type}/>
-                    {!creatingStatus || editStatus &&
-                      <Box sx={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          mt: 3
-                      }}>
-                        <Button onClick={deleteUser} variant="contained" endIcon={<DeleteIcon/>}>
-                          Delete User
-                        </Button>
-                      </Box>
-                    }
+
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        mt: 3
+                    }}>
+                        {(!creatingStatus || editStatus) &&
+                          <Button onClick={deleteUser} variant="contained" endIcon={<DeleteIcon/>}>
+                            Delete User
+                          </Button>
+                        }
+                    </Box>
                 </Box>
             </Fade>
         </Modal>
