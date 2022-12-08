@@ -46,15 +46,22 @@ export default function UserForm(props: { type: any }) {
                         const lastEl = typeof field === "object" ? field.at(-1) : '';
                         const name = typeof field === "object" ? firstEl : field;
                         const value = typeof lastEl === "object" ? '' : lastEl;
-                        const disabledStatus = name === 'id' ? true : false;
+                        const idField = name === 'id'
+                        const usernameField = name === 'username'
+                        const disabledStatus = idField ? true : false;
+                        const requiredStatus = (idField || usernameField) ? true : false;
+                        const errorStatus = requiredStatus && value.length === 0
+                        const helperText = errorStatus ? 'Empty field' : ''
 
                         return (
                             <TextField
                                 disabled={disabledStatus}
-                                key={name + index}
-                                required
-                                id={name}
                                 label={name}
+                                error={errorStatus}
+                                key={name + index}
+                                helperText={helperText}
+                                required={requiredStatus}
+                                id={name}
                                 defaultValue={value}
                                 onChange={(e) => {
                                     onChangeField(name, e.target.value);
