@@ -22,7 +22,7 @@ export default function ListUserData(props: { list: any; }) {
                 }
                 return (
                     <ListItem key={firstFieldValue + index} disablePadding>
-                        <ListItemText secondary={
+                        <ListItemText disableTypography secondary={
                             <React.Fragment>
                                 <Typography
                                     component="span"
@@ -56,7 +56,7 @@ export default function ListUserData(props: { list: any; }) {
                                             }
                                             return (
                                                 <ListItem key={firstFieldValue + index} disablePadding>
-                                                    <ListItemText secondary={
+                                                    <ListItemText disableTypography secondary={
                                                         <React.Fragment>
                                                             <Typography
                                                                 component="span"
@@ -82,9 +82,9 @@ export default function ListUserData(props: { list: any; }) {
                                                                         const secondFieldValue: any = el.at(-1)
 
                                                                         return (
-                                                                            <ListItem key={firstFieldValue + index}
+                                                                            <ListItem  key={firstFieldValue + index}
                                                                                       disablePadding>
-                                                                                <ListItemText secondary={
+                                                                                <ListItemText disableTypography secondary={
                                                                                     <React.Fragment>
                                                                                         <Typography
                                                                                             component="span"
