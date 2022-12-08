@@ -11,6 +11,7 @@ import {getUser, setUser} from '../features/users/userSlice';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UserForm from './UserForm';
 import {getUsers, setUsers} from '../features/users/usersSlice';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -37,17 +38,30 @@ export default function EditModal(props: {
     const type = props.type
     const editStatus = type && type === 'edit' ? true : false
     const addingStatus = type && type === 'new' ? true : false
-    const userData = users.filter((user) => {
-        return user.id === userID;
-    })
+    const listFields = Object.keys(users[0])
+    const [creatingStatus, setCreatingStatus] = React.useState(true);
 
-    if (editStatus) {
-        title = 'Edit or delete User'
-    }
+    React.useEffect(() => {
+        console.log(users)
+    });
 
-    if (addingStatus) {
-        dispatch(setUser(''))
-        title = 'Add new user'
+    if (addingStatus) title = 'Add new user'
+
+    if (editStatus) title = 'Edit or delete User'
+
+    function createUser() {
+        setCreatingStatus(false)
+        const allIds = users.map((user) => {
+            return user.id
+        })
+        const newID: number = Math.max(...allIds) + 1
+        if (allIds.includes(newID)) return false
+        const emptyFields: object = listFields.reduce((a, v) => ({
+            ...a, [v]: ''
+        }), {})
+        emptyFields.id = newID
+        dispatch(setUser(newID))
+        dispatch(setUsers([...users, emptyFields]))
     }
 
     function deleteUser() {
@@ -60,8 +74,6 @@ export default function EditModal(props: {
 
     return (
         <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
             open={open}
             onClose={handleClose}
             closeAfterTransition
@@ -75,8 +87,19 @@ export default function EditModal(props: {
                     <Typography variant="h6" component="h2">
                         {title}
                     </Typography>
+                    {addingStatus && creatingStatus &&
+                      <Box sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          m: 1
+                      }}>
+                        <Button onClick={createUser} variant="contained" endIcon={<AddCircleOutlineIcon/>}>
+                          Create User
+                        </Button>
+                      </Box>
+                    }
                     <UserForm type={type}/>
-                    {editStatus &&
+                    {!creatingStatus || editStatus &&
                       <Box sx={{
                           display: 'flex',
                           justifyContent: 'center',

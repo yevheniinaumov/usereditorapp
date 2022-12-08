@@ -59,12 +59,12 @@ export default function UsersList() {
         setPage(0);
     };
 
-    const selectUser = (id: string) => {
+    const selectUser = (id: number) => {
         dispatch(setUser(id))
         router.push('/user')
     }
 
-    const handleOpenModal = (type: string, id: string) => {
+    const handleOpenModal = (type: string, id: number) => {
         if (id) dispatch(setUser(id))
         setModalType(type)
         setModalStatus(true)
@@ -94,7 +94,7 @@ export default function UsersList() {
                     sx={{mr: 1}}
                     label="User search"/>
                 <Button onClick={() => {
-                    handleOpenModal('new', '')
+                    handleOpenModal('new', 0)
                 }} variant="contained" endIcon={<AddIcon/>}>
                     Add User
                 </Button>
@@ -137,10 +137,10 @@ export default function UsersList() {
                                         >
                                             <ButtonGroup variant="text" aria-label="text button group">
                                                 <Button onClick={() => {
-                                                    handleOpenModal('edit', row.id)
+                                                    handleOpenModal('edit', parseInt(row.id))
                                                 }}>Edit</Button>
                                                 <Button onClick={() => {
-                                                    selectUser(row.id)
+                                                    selectUser(parseInt(row.id))
                                                 }}>View</Button>
                                             </ButtonGroup>
                                         </Box>
