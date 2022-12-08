@@ -21,6 +21,10 @@ export default function UserForm() {
     }) : []
     const listFields = userData.length ? Object.entries(userData.at(-1)) : []
 
+    React.useEffect(() => {
+        console.log(users)
+    });
+
     function onChangeField(name: string, value: any) {
         if (type === 'edit') {
             const changedUserData = users.map((user) => ({
@@ -46,6 +50,7 @@ export default function UserForm() {
                         const firstEl = field[0];
                         const lastEl = typeof field === "object" ? field.at(-1) : '';
                         const name = typeof field === "object" ? firstEl : field;
+                        if (name === 'modified') return false
                         const value = typeof lastEl === "object" ? '' : lastEl;
                         const idField = name === 'id'
                         const usernameField = name === 'username'
