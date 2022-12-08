@@ -34,16 +34,18 @@ export default function EditModal(props: {
     const userID = useAppSelector(getUser);
     const open = props.status
     const handleClose = props.handle
-    const type = props.type
-    const editStatus = type && type === 'edit' ? true : false
-    const addingStatus = type && type === 'new' ? true : false
+    const [type, setType] = React.useState('');
     const listFields = Object.keys(users[0])
     const [creatingStatus, setCreatingStatus] = React.useState(true);
     let title = ''
 
-    if (addingStatus) title = 'Add new user'
+    if (type === 'new') title = 'Add new user'
 
-    if (editStatus) title = 'Edit or delete User'
+    if (type === 'edit') title = 'Edit or delete User'
+
+    React.useEffect(() => {
+        setType(props.type)
+    }, [props.type]);
 
     function createUser() {
         setCreatingStatus(false)
@@ -58,6 +60,7 @@ export default function EditModal(props: {
         emptyFields.id = newID
         dispatch(setUser(newID))
         dispatch(setUsers([...users, emptyFields]))
+        setType('edit')
     }
 
     function deleteUser() {
@@ -88,7 +91,7 @@ export default function EditModal(props: {
                         justifyContent: 'center',
                         m: 1
                     }}>
-                        {addingStatus && creatingStatus &&
+                        {type === 'new' && creatingStatus &&
                           <Button onClick={createUser} variant="contained" endIcon={<AddCircleOutlineIcon/>}>
                             Create User
                           </Button>
@@ -101,7 +104,7 @@ export default function EditModal(props: {
                         justifyContent: 'center',
                         mt: 3
                     }}>
-                        {(!creatingStatus || editStatus) &&
+                        {(!creatingStatus || type === 'edit') &&
                           <Button onClick={deleteUser} variant="contained" endIcon={<DeleteIcon/>}>
                             Delete User
                           </Button>
