@@ -29,7 +29,8 @@ export default function UserForm() {
         if (type === 'edit') {
             const changedUserData = users.map((user) => ({
                 ...user,
-                [name]: user.id === userID ? value : user[name]
+                [name]: user.id === userID ? value : user[name],
+                modified: user.id === userID ? true: false
             }))
             dispatch(setUsers(changedUserData))
         }

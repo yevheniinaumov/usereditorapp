@@ -56,6 +56,8 @@ export default function EditModal(props: {
         }), {})
         // @ts-ignore
         emptyFields.id = newID
+        // @ts-ignore
+        emptyFields.modified = true
         dispatch(setUser(newID))
         dispatch(setUsers([...users, emptyFields]))
     }
