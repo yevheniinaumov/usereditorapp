@@ -117,13 +117,13 @@ export default function UsersList () {
             })
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => {
-                const modifiedStyles = row.modified ? { fontWeight: 'bold' } : { fontWeight: 'normal' }
+                const modifiedStyles = !!row.modified ? 'bold' : 'normal'
                 return (
                   <TableRow
                     key={row.name + index}
                     sx={{
                       '&:last-child td, &:last-child th': { border: 0 },
-                      'th, td': {modifiedStyles}
+                      'th, td': {fontWeight: modifiedStyles }
                     }}
                   >
                     <TableCell component="th" scope="row">
