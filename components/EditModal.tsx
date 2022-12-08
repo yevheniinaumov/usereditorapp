@@ -80,7 +80,7 @@ export default function EditModal(props: {
                       <Box sx={{
                           display: 'flex',
                           justifyContent: 'center',
-                          mt: 5
+                          mt: 3
                       }}>
                         <Button onClick={deleteUser} variant="contained" endIcon={<DeleteIcon/>}>
                           Delete User

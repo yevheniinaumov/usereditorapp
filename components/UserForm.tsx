@@ -7,6 +7,8 @@ import {getUser} from '../features/users/userSlice';
 import {Button} from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import {useState} from "react";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import {Typography} from '@mui/material';
 
 export default function UserForm(props: { type: any }) {
     const dispatch = useAppDispatch();
@@ -31,10 +33,6 @@ export default function UserForm(props: { type: any }) {
         }
     }
 
-    function applyUserData() {
-        console.log('applyUserData')
-    }
-
     return <>
         <Box
             component="form"
@@ -49,9 +47,11 @@ export default function UserForm(props: { type: any }) {
                 const lastEl = typeof field === "object" ? field.at(-1) : ''
                 const name = typeof field === "object" ? firstEl : field
                 const value = typeof lastEl === "object" ? '' : lastEl
+                const disabledStatus = name === 'id' ? true : false
 
                 return (
                     <TextField
+                        disabled={disabledStatus}
                         key={name + index}
                         required
                         id={name}
@@ -68,11 +68,13 @@ export default function UserForm(props: { type: any }) {
         <Box sx={{
             display: 'flex',
             justifyContent: 'center',
-            mt: 5
+            alignItems: 'center',
+            mt: 1
         }}>
-            <Button onClick={applyUserData} variant="contained" endIcon={<CheckIcon/>}>
-                Apply
-            </Button>
+            <CheckCircleOutlineIcon/>
+            <Typography variant="h6" component="span">
+                Autosave Changes
+            </Typography>
         </Box>
     </>
 }
