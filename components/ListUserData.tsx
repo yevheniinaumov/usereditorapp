@@ -34,7 +34,7 @@ export default function ListUserData (props: { list: any; }) {
                   component="span"
                   variant="caption"
                 >
-                  {secondFieldValue}
+                  {secondFieldValue.toString()}
                 </Typography>
                 {optionalFieldValue &&
                   <Box sx={{

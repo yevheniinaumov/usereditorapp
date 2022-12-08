@@ -21,10 +21,6 @@ export default function UserForm() {
     }) : []
     const listFields = userData.length ? Object.entries(userData.at(-1)) : []
 
-    React.useEffect(() => {
-        console.log(users)
-    });
-
     function onChangeField(name: string, value: any) {
         if (type === 'edit') {
             const changedUserData = users.map((user) => ({
